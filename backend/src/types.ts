@@ -103,6 +103,7 @@ export const ReconciliationSummarySchema = z.object({
   onlyInErp: z.number(),
   onlyInWms: z.number(),
   statusMismatch: z.number(),
+  failed: z.number(),
   mismatches: z.number(),
 });
 
