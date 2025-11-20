@@ -91,6 +91,7 @@ api.openapi(
 
     if (scenario === "DUPLICATE") {
       // Inject again
+      console.log(`[ERP] Inserting duplicate order with ${order.erpOrderId}`);
       await fulfilService.injectMockOrder(order);
     }
 
