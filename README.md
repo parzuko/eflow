@@ -2,6 +2,10 @@
 
 A robust simulation of an order integration middleware between **Fulfil (ERP)** and **Mabang (WMS)**.
 
+> Also, check out [backend docs](https://eflow-production.up.railway.app/doc)
+
+Checkout the current deployment ✨ [frontend](https://eflow-frontend.vercel.app/) ✨
+
 ## 🏁 Getting Started
 
 ### Prerequisites
@@ -33,6 +37,20 @@ A robust simulation of an order integration middleware between **Fulfil (ERP)** 
     # FE at 3000
 
     ```
+
+### 🌍 Environment Variables
+
+Best to just copy over the `.env.example`. These values won't matter for running locally.
+
+- `FRONTEND_URL` (backend): set this to the URL your browser uses to reach the frontend. Defaults to `http://localhost:3000`; handy when the UI is served from another origin.
+- `NEXT_PUBLIC_BACKEND_URL` (frontend): base URL for API calls from the dashboard. Defaults to `http://localhost:9000/api`; override when the backend is running elsewhere or exposed via a tunnel.
+
+```bash
+
+.env
+FRONTEND_URL=https://eflow-frontend.vercel.app/
+NEXT_PUBLIC_BACKEND_URL=https://eflow-production.up.railway.app/api
+```
 
 ## 🚀 Features
 
