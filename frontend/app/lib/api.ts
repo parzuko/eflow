@@ -56,3 +56,13 @@ export const toggleJob = async (job: string, enabled: boolean) => {
   const { data } = await api.post(`/jobs/${job}/toggle`, { enabled });
   return data;
 };
+
+export const debugErp = async () => {
+  const { data } = await api.get("/debug/erp");
+  return data;
+};
+
+export const debugWms = async () => {
+  const { data } = await api.get("/debug/wms");
+  return data;
+};

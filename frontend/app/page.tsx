@@ -14,6 +14,7 @@ import { useSync } from "./mutations/useSync";
 import { useReconcileExplicit } from "./mutations/useReconcileExplicit";
 import { useToggleJob } from "./mutations/useToggleJob";
 import { useReplay } from "./mutations/useReplay";
+import { useDebug } from "./queries/useDebug";
 
 export default function Home() {
   const [tab, setTab] = useState<"orders" | "dlq" | "reconcile" | "debug">(
@@ -26,6 +27,7 @@ export default function Home() {
   const ordersQuery = useOrders();
   const dlqQuery = useDLQ();
   const reconcileQuery = useReconcile(tab === "reconcile");
+  const debugQuery = useDebug();
 
   const injectMutation = useErpInjection();
   const syncMutation = useSync();
@@ -108,8 +110,8 @@ export default function Home() {
         {/* Stats & Health */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           {/* Simple Counters */}
-          <div className="bg-white p-4 rounded shadow border-l-4 border-blue-500">
-            <div className="text-sm text-gray-500">Received (ERP)</div>
+          <div className="bg-white p-4 rounded shadow">
+            <div className="text-sm text-gray-500">Received from ERP</div>
             <div className="text-2xl font-bold">
               {stats.onlyInErp +
                 stats.inSync +
@@ -117,11 +119,11 @@ export default function Home() {
                 stats.failed}
             </div>
           </div>
-          <div className="bg-white p-4 rounded shadow border-l-4 border-green-500">
+          <div className="bg-white p-4 rounded shadow">
             <div className="text-sm text-gray-500">Synced (WMS)</div>
             <div className="text-2xl font-bold">{stats.inSync}</div>
           </div>
-          <div className="bg-white p-4 rounded shadow border-l-4 border-red-500">
+          <div className="bg-white p-4 rounded shadow border-b-4 border-red-500">
             <div className="text-sm text-gray-500">Failed / Mismatch</div>
             <div className="text-2xl font-bold">
               {stats.failed + stats.statusMismatch + stats.onlyInWms}
@@ -130,7 +132,7 @@ export default function Home() {
 
           {/* System Health & Toggles */}
           <div
-            className={`bg-white p-4 rounded shadow border-l-4 ${
+            className={`bg-white p-4 rounded shadow border-b-4 ${
               stats.mismatches > 5
                 ? "border-red-600 bg-red-50"
                 : "border-green-500"
@@ -165,7 +167,7 @@ export default function Home() {
                       })
                     }
                     className={`w-8 h-4 rounded-full transition-colors duration-200 focus:outline-none ${
-                      health.jobs?.sync ? "bg-green-500" : "bg-gray-300"
+                      health.jobs?.sync ? "bg-black" : "bg-gray-300"
                     }`}
                   >
                     <div
@@ -185,7 +187,7 @@ export default function Home() {
                       })
                     }
                     className={`w-8 h-4 rounded-full transition-colors duration-200 focus:outline-none ${
-                      health.jobs?.reconcile ? "bg-purple-500" : "bg-gray-300"
+                      health.jobs?.reconcile ? "bg-black" : "bg-gray-300"
                     }`}
                   >
                     <div
@@ -209,7 +211,7 @@ export default function Home() {
               onClick={() => setTab("orders")}
               className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 ${
                 tab === "orders"
-                  ? "border-blue-500 text-blue-600"
+                  ? "border-gray-500 text-gray-600"
                   : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
               }`}
             >
@@ -236,7 +238,7 @@ export default function Home() {
               onClick={() => setTab("reconcile")}
               className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 ${
                 tab === "reconcile"
-                  ? "border-purple-500 text-purple-600"
+                  ? "border-gray-500 text-gray-600"
                   : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
               }`}
             >
@@ -413,7 +415,7 @@ export default function Home() {
         {/* Detailed Reconciliation Table */}
         {tab === "reconcile" && (
           <div className="bg-white rounded shadow overflow-hidden">
-            <div className="p-4 bg-purple-50 border-b border-purple-100 text-purple-800 text-sm flex items-center gap-2">
+            <div className="p-4 bg-gray-50 border-b border-gray-100 text-gray-800 text-sm flex items-center gap-2">
               <Activity size={16} />
               Detailed list of discrepancies between ERP and WMS.
             </div>
@@ -468,17 +470,17 @@ export default function Home() {
               <h3 className="font-bold text-gray-700 mb-2">
                 Raw ERP Orders (Source)
               </h3>
-              <div className="bg-gray-100 p-4 rounded text-xs overflow-auto h-96 flex items-center justify-center text-gray-500 italic">
-                Debug view not implemented in frontend yet.
-              </div>
+              <pre className="bg-gray-100 p-2 rounded text-xs overflow-auto h-96">
+                {JSON.stringify(debugQuery.data?.erp, null, 2)}
+              </pre>
             </div>
             <div className="bg-white rounded shadow p-4">
               <h3 className="font-bold text-gray-700 mb-2">
                 Raw WMS Orders (Destination)
               </h3>
-              <div className="bg-gray-100 p-4 rounded text-xs overflow-auto h-96 flex items-center justify-center text-gray-500 italic">
-                Debug view not implemented in frontend yet.
-              </div>
+              <pre className="bg-gray-100 p-2 rounded text-xs overflow-auto h-96">
+                {JSON.stringify(debugQuery.data?.wms, null, 2)}
+              </pre>
             </div>
           </div>
         )}
