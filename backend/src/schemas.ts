@@ -5,6 +5,7 @@ import { ErpOrderInputSchema } from "./types.js";
 export const SystemHealthSchema = z.object({
   erp: z.enum(["UP", "DOWN"]),
   wms: z.enum(["UP", "DOWN"]),
+  isHealthy: z.boolean(),
   queue: z.object({
     status: z.enum(["UP", "DOWN"]),
     length: z.number(),
