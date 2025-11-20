@@ -9,7 +9,9 @@
   "dependencies": {
     "@hono/node-server": "^1.19.6",
     "@hono/zod-openapi": "^1.1.5",
-    "hono": "^4.10.6"
+    "@scalar/hono-api-reference": "^0.9.24",
+    "hono": "^4.10.6",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
